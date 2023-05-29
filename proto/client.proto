@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package client;
+
+service ClientService {
+    rpc LocalTrain(GlobalModel) returns (LocalModel){}
+}
+
+message GlobalModel {
+    int32 round = 1;
+    bytes model = 2;
+}
+
+message LocalModel {
+    bytes model = 1;
+}

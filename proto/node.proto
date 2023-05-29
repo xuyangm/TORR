@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package node;
+
+service NodeService {
+    rpc GetChunk(GetChunkRequest) returns (GetChunkResponse){}
+    rpc Verify(VerifyRequest) returns (VerifyResponse){}
+    rpc SaveChunk(SaveChunkRequest) returns (SaveChunkResponse){}
+    rpc DeliverBlock(grpcBlock) returns (BlockResponse){}
+    rpc DeliverModel(grpcModel) returns (ModelResponse){}
+}
+
+message BlockResponse {
+    string result = 1;
+}
+
+message VerifyRequest {
+    string hash = 1;
+}
+
+message VerifyResponse {
+    string result = 1;
+    map<string, float> scores = 2;
+}
+
+message SaveChunkRequest {
+    string model_hash = 1;
+    string chunk_hash = 2;
+    int32 btl = 3;
+    bytes content = 4;
+}
+
+message SaveChunkResponse {
+    string model_hash = 1;
+    string result = 2;
+}
+
+message grpcChunk {
+    string hash = 1;
+    int32 index = 2;
+    string keeper = 3;
+}
+
+message grpcBlock {
+    float timestamp = 1;
+    float time_diff = 2;
+    int32 rd = 3;
+    int32 id = 4;
+    string miner = 5;
+    bytes beta_string = 6;
+    map<string, float> stake = 7;
+    repeated grpcModel models = 8;
+    repeated float scores = 9;
+}
+
+message grpcModel {
+    string owner = 1;
+    int32 rd = 2;
+    string model_hash = 3;
+    map<string, float> scores = 4;
+    repeated grpcChunk chunks = 5;
+}
+
+message GetChunkRequest {
+    string hash = 1;
+}
+
+message GetChunkResponse {
+    bytes content = 1;
+}
+
+message ModelResponse {
+    string result = 1;
+}
